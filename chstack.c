@@ -17,33 +17,33 @@ This file is part of Reverse Notation Calc.
 */
 
 #include <stdlib.h>
-#include "mystack.h"
+#include "chstack.h"
 
-void my_stack_init(my_stack* stack, size_t size)
+void char_stack_init(ch_stack* stack, size_t size)
 {
     stack->size = size;
     stack->count = 0;
-    stack->ptr = calloc(stack->size, sizeof(int));
+    stack->ptr = calloc(stack->size, sizeof(char));
 }
 
-void my_stack_done(my_stack* stack)
+void char_stack_done(ch_stack* stack)
 {
     stack->size = 0;
     stack->count = 0;
     free(stack->ptr);
 }
 
-void my_stack_clean(my_stack* stack)
+void char_stack_clean(ch_stack* stack)
 {
     stack->count = 0;
 }
 
-int my_stack_count(my_stack* stack)
+int char_stack_count(ch_stack* stack)
 {
     return stack->count;
 }
 
-void my_stack_push(my_stack* stack, int value)
+void char_stack_push(ch_stack* stack, char value)
 {
     if (stack->count >= stack->size) {
         return;
@@ -51,7 +51,7 @@ void my_stack_push(my_stack* stack, int value)
     stack->ptr[stack->count++] = value;
 }
 
-int my_stack_pull(my_stack* stack)
+char char_stack_pull(ch_stack* stack)
 {
     if (stack->count == 0) {
         return -1;
@@ -59,7 +59,15 @@ int my_stack_pull(my_stack* stack)
     return stack->ptr[--stack->count];
 }
 
-int my_stack_top(my_stack* stack)
+char char_stack_get_deep(ch_stack* stack, int index)
+{
+    if (stack->count == 0 || index < 0 || stack->count < index) {
+        return -1;
+    }
+    return stack->ptr[index];
+}
+
+int char_stack_top(ch_stack* stack)
 {
     if (stack->count == 0) {
         return -1;
@@ -67,12 +75,12 @@ int my_stack_top(my_stack* stack)
     return stack->ptr[stack->count];
 }
 
-int my_stack_is_empty(my_stack* stack)
+int char_stack_is_empty(ch_stack* stack)
 {
     return stack->count == 0;
 }
 
-int my_stack_is_full(my_stack* stack)
+int char_stack_is_full(ch_stack* stack)
 {
     return stack->count >= stack->size;
 }
